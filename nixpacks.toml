@@ -1,10 +1,11 @@
 [phases.setup]
-nixPkgs = ["python310", "chromium", "chromiumDriver"]
+nixPkgs = ["python310", "chromium"]
 
 [phases.install]
 cmds = [
   "pip install --upgrade pip",
-  "pip install -r requirements.txt"
+  "pip install -r requirements.txt",
+  "pip install webdriver-manager"
 ]
 
 [phases.build]
@@ -12,8 +13,4 @@ cmds = []
 
 [start]
 cmd = "python trader.py"
-
-[variables]
-GOOGLE_CHROME_BIN = "/nix/store/*/chromium-*/bin/chromium"
-CHROMEDRIVER_PATH = "/nix/store/*/chromium-*/bin/chromedriver"
 

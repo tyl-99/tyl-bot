@@ -245,16 +245,28 @@ class SimpleTrader:
             # Railway/deployment environment settings
             chrome_options.add_argument('--disable-extensions')
             chrome_options.add_argument('--disable-software-rasterizer')
-            chrome_options.binary_location = os.getenv('GOOGLE_CHROME_BIN') or '/usr/bin/chromium-browser'
             
-            # Use ChromeDriverManager or fallback to system chromedriver
+            # Set Chrome binary location for Railway/Nixpacks
+            chrome_bin = os.getenv('GOOGLE_CHROME_BIN') or os.getenv('CHROMIUM_BIN') or '/nix/store/*/chromium-*/bin/chromium'
+            if chrome_bin and chrome_bin != '/nix/store/*/chromium-*/bin/chromium':
+                chrome_options.binary_location = chrome_bin
+            
+            # Try webdriver-manager first (auto-downloads ChromeDriver), then fallback to system
             try:
+                from webdriver_manager.chrome import ChromeDriverManager
                 from selenium.webdriver.chrome.service import Service
-                service = Service(executable_path=os.getenv('CHROMEDRIVER_PATH') or '/usr/bin/chromedriver')
+                service = Service(ChromeDriverManager().install())
                 driver = webdriver.Chrome(service=service, options=chrome_options)
             except Exception:
-                # Fallback: try without explicit service
-                driver = webdriver.Chrome(options=chrome_options)
+                try:
+                    # Fallback: try with system chromedriver
+                    from selenium.webdriver.chrome.service import Service
+                    chromedriver_path = os.getenv('CHROMEDRIVER_PATH') or '/usr/bin/chromedriver'
+                    service = Service(executable_path=chromedriver_path)
+                    driver = webdriver.Chrome(service=service, options=chrome_options)
+                except Exception:
+                    # Final fallback: let Selenium find it automatically
+                    driver = webdriver.Chrome(options=chrome_options)
             driver.implicitly_wait(10)
             
             # Format date for ForexFactory
