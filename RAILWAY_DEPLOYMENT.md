@@ -28,8 +28,11 @@ CTRADER_CLIENT_SECRET=your_secret
 CTRADER_ACCOUNT_ID=your_account_id
 GEMINI_APIKEY=your_gemini_key
 
-# Optional (has fallback)
+# Optional
 CTRADER_ACCESS_TOKEN=optional_token
+
+# Pushover (OPTIONAL - already hardcoded as fallback in trader.py)
+# Only set these if you want to use different credentials
 PUSHOVER_APP_TOKEN=your_app_token
 PUSHOVER_USER_KEY=your_user_key
 ```
