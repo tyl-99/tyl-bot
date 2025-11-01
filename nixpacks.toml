@@ -3,9 +3,9 @@ nixPkgs = ["python310", "chromium"]
 
 [phases.install]
 cmds = [
-  "pip install --upgrade pip",
-  "pip install -r requirements.txt",
-  "pip install webdriver-manager"
+  "python -m pip install --upgrade pip",
+  "python -m pip install -r requirements.txt",
+  "python -m pip install webdriver-manager"
 ]
 
 [phases.build]
