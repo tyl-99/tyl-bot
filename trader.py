@@ -663,6 +663,9 @@ class SimpleTrader:
             indicators = self.compute_indicators_snapshot(df)
             news = self.get_news_for_pair(pair)
             reco = self.llm_recommendation(pair, signal, indicators, news)
+            if "HOLD" in reco.upper():
+                logger.info("LLM recommendation is HOLD for %s; skipping notification", pair)
+                return
             message = self.format_notification(pair, signal, indicators, news, reco)
             title = f"{action} Signal - {pair}"
             if self.dry_run_notify:
@@ -771,6 +774,10 @@ class SimpleTrader:
         indicators = self.compute_indicators_snapshot(df)
         news = self.get_news_for_pair(pair)
         reco = self.llm_recommendation(pair, signal, indicators, news)
+        if "HOLD" in reco.upper():
+            logger.info("LLM recommendation is HOLD for %s; skipping notification", pair)
+            self.move_next_pair()
+            return
         message = self.format_notification(pair, signal, indicators, news, reco)
         title = f"{action} Signal - {pair}"
         if self.dry_run_notify:

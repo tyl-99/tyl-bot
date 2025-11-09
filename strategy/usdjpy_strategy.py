@@ -36,8 +36,8 @@ class USDJPYStrategy:
     def __init__(self, target_pair="USD/JPY",
                  zone_lookback=300,
                  base_max_candles=4,
-                 move_min_ratio=3.5,
-                 zone_width_max_pips=18,
+                 move_min_ratio=4.5,
+                 zone_width_max_pips=14,
                  risk_reward_ratio=3.0, # Set back to 3.0 for 1:3 R:R
                  sl_buffer_pips=4.0,
                  ema_periods: Optional[List[int]] = None,
